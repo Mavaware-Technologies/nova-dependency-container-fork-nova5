@@ -9,7 +9,7 @@ trait ActionHasDependencies
 {
     use HasChildFields;
 
-    protected function fieldsForValidation(ActionRequest $request)
+    protected function fieldsForValidation(ActionRequest $request): void
     {
         $availableFields = [];
 
@@ -30,15 +30,7 @@ trait ActionHasDependencies
         }
     }
 
-    /**
-     * Validate action fields. Mostly a copy paste from Nova
-     *
-     * Uses the above to validate only on fields that have satisfied dependencies.
-     *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
-     * @return array
-     */
-    public function validateFields(ActionRequest $request)
+    public function validateFields(ActionRequest $request): array
     {
         $fields = collect($this->fieldsForValidation($request));
 
