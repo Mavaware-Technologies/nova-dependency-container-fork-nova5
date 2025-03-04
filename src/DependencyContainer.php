@@ -176,9 +176,9 @@ class DependencyContainer extends Field
      * Resolve dependency fields for display
      *
      * @param mixed $resource
-     * @param null  $attribute
+     * @param null $attribute
      */
-    public function resolveForDisplay($resource, $attribute = null)
+    public function resolveForDisplay($resource, ?string $attribute = null): void
     {
         foreach ($this->meta['fields'] as $field) {
             $field->resolveForDisplay($resource);
@@ -241,14 +241,13 @@ class DependencyContainer extends Field
     }
 
     /**
-     * Resolve dependency fields
+     * Resolve the field's value.
      *
-     * @param mixed  $resource
-     * @param string $attribute
-     * @return array|mixed
+     * @param \Laravel\Nova\Resource|\Illuminate\Database\Eloquent\Model|object|array $resource
      */
-    public function resolve($resource, $attribute = null)
+    public function resolve($resource, ?string $attribute = null): void
     {
+        parent::resolve($resource, $attribute);
         foreach ($this->meta['fields'] as $field) {
             $field->resolve($resource, $attribute);
         }
@@ -262,7 +261,7 @@ class DependencyContainer extends Field
      * @param NovaRequest $request
      * @param             $model
      * @param             $attribute
-     * @param null        $requestAttribute
+     * @param null $requestAttribute
      */
     public function fillInto(NovaRequest $request, $model, $attribute, $requestAttribute = null)
     {
@@ -353,7 +352,7 @@ class DependencyContainer extends Field
      * Get a rule set based on field property name
      *
      * @param NovaRequest $request
-     * @param string      $methodName
+     * @param string $methodName
      * @return array
      */
     protected function getSituationalRulesSet(NovaRequest $request, string $methodName = 'getRules')
@@ -412,24 +411,12 @@ class DependencyContainer extends Field
         return $result;
     }
 
-    /**
-     * Get the validation rules for this field.
-     *
-     * @param NovaRequest $request
-     * @return array
-     */
-    public function getRules(NovaRequest $request)
+    public function getRules(NovaRequest $request): array
     {
         return $this->getSituationalRulesSet($request);
     }
 
-    /**
-     * Get the creation rules for this field.
-     *
-     * @param NovaRequest $request
-     * @return array|string
-     */
-    public function getCreationRules(NovaRequest $request)
+    public function getCreationRules(NovaRequest $request): array
     {
         $fieldsRules = $this->getSituationalRulesSet($request, 'getCreationRules');
 
@@ -439,13 +426,7 @@ class DependencyContainer extends Field
         );
     }
 
-    /**
-     * Get the update rules for this field.
-     *
-     * @param NovaRequest $request
-     * @return array
-     */
-    public function getUpdateRules(NovaRequest $request)
+    public function getUpdateRules(NovaRequest $request): array
     {
         $fieldsRules = $this->getSituationalRulesSet($request, 'getUpdateRules');
 
